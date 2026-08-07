@@ -1,5 +1,13 @@
-# आवश्यक लाइब्रेरीज इंपोर्ट करें
-import numpy as np
+# Vats Project Notebook
+Welcome to the official notebook created for **Vats**. This notebook demonstrates basic data analysis and visualization using Python.
+
+---
+
+### 1. Libraries Import karna
+```python
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 print("Libraries imported successfully!")
