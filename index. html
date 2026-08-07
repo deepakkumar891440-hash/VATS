@@ -1,0 +1,5 @@
+# आवश्यक लाइब्रेरीज इंपोर्ट करें
+import numpy as np
+import pandas as pd
+
+print("Libraries imported successfully!")
