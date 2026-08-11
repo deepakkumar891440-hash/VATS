@@ -4,111 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>THE DEEPAK NOTES</title>
-    <!-- FontAwesome for Icons -->
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            background-color: #f4f5f7;
-            color: #202124;
+            background-color: #f7f7f7;
+            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
 
-        /* Mobile Container Wrapper */
-        .phone-container {
+        /* App Container (Mobile screen view) */
+        .app-container {
             width: 100%;
             max-width: 420px;
             height: 100vh;
-            max-height: 850px;
-            background-color: #ffffff;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background-color: #fdfdfd;
             display: flex;
             flex-direction: column;
             position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
             overflow: hidden;
-            border-radius: 0;
         }
 
-        @media (min-width: 480px) {
-            .phone-container {
+        @media (min-width: 421px) {
+            .app-container {
+                height: 85vh;
                 border-radius: 30px;
-                border: 8px solid #202124;
+                border: 8px solid #333;
             }
         }
 
         /* Header Section */
-        .header {
+        .app-header {
             padding: 20px 20px 10px 20px;
+            background-color: #fdfdfd;
+        }
+
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
         }
 
-        .header h1 {
+        .app-title {
             font-size: 24px;
-            font-weight: 400;
-            color: #1a1a1a;
-            letter-spacing: -0.5px;
+            font-weight: 600;
+            color: #222;
+            letter-spacing: 0.5px;
         }
 
         .header-icons i {
             font-size: 20px;
-            color: #5f6368;
+            color: #555;
             margin-left: 20px;
             cursor: pointer;
         }
 
         /* Search Bar */
-        .search-container {
-            padding: 10px 20px;
-        }
-
         .search-box {
             background-color: #f1f3f4;
-            border-radius: 28px;
+            border-radius: 30px;
+            padding: 10px 18px;
             display: flex;
             align-items: center;
-            padding: 12px 18px;
+            margin-bottom: 15px;
         }
 
         .search-box i {
-            color: #5f6368;
-            font-size: 16px;
+            color: #70757a;
             margin-right: 12px;
+            font-size: 16px;
         }
 
         .search-box input {
             border: none;
             background: transparent;
             outline: none;
-            font-size: 16px;
             width: 100%;
-            color: #3c4043;
+            font-size: 15px;
+            color: #333;
         }
 
-        .search-box input::placeholder {
-            color: #5f6368;
-        }
-
-        /* Tabs Filter */
-        .tabs {
+        /* Tabs (All, Call notes, Uncategorised) */
+        .tabs-container {
             display: flex;
-            padding: 10px 20px;
             gap: 10px;
             overflow-x: auto;
+            padding-bottom: 8px;
             scrollbar-width: none;
         }
 
-        .tabs::-webkit-scrollbar {
+        .tabs-container::-webkit-scrollbar {
             display: none;
         }
 
@@ -116,89 +115,72 @@
             padding: 8px 18px;
             border-radius: 20px;
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
             white-space: nowrap;
             background-color: #f1f3f4;
             color: #3c4043;
-            transition: 0.2s;
+            transition: 0.3s;
         }
 
         .tab.active {
-            background-color: #e8eaed;
-            font-weight: 500;
-            color: #1a73e8;
+            background-color: #202124;
+            color: #fff;
         }
 
-        /* Notes List Scroll Area */
+        /* Notes List Area */
         .notes-list {
             flex: 1;
             overflow-y: auto;
             padding: 10px 20px 80px 20px;
-            scrollbar-width: none;
         }
 
-        .notes-list::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Note Card Style */
         .note-card {
-            background-color: #f8f9fa;
+            background: #ffffff;
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: transform 0.1s ease;
-            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
             border: 1px solid #f1f3f4;
-            position: relative;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
 
         .note-card:active {
             transform: scale(0.98);
         }
 
-        .note-title {
+        .note-card h3 {
             font-size: 16px;
             font-weight: 600;
             color: #202124;
             margin-bottom: 6px;
         }
 
-        .note-snippet {
-            font-size: 14px;
+        .note-card p {
+            font-size: 13px;
             color: #5f6368;
-            margin-bottom: 8px;
-            white-space: nowrap;
+            margin-bottom: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
             overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        .note-date {
-            font-size: 12px;
-            color: #80868b;
+        .note-footer {
+            font-size: 11px;
+            color: #9aa0a6;
+            font-weight: 500;
         }
 
-        .delete-btn {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            color: #d93025;
-            cursor: pointer;
-            font-size: 14px;
-            background: #fce8e6;
-            padding: 6px 10px;
-            border-radius: 50%;
-        }
-
-        /* Floating Action Button (FAB) */
+        /* Floating Action Button (+) */
         .fab {
             position: absolute;
-            bottom: 70px;
+            bottom: 75px;
             right: 20px;
             width: 56px;
             height: 56px;
-            background-color: #ffbb33;
+            background-color: #fbbc05; /* MIUI / Google Yellow theme */
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -209,94 +191,26 @@
             z-index: 10;
         }
 
-        .fab:hover {
-            transform: scale(1.05);
-        }
-
         .fab i {
             font-size: 24px;
-            color: #ffffff;
+            color: #fff;
         }
 
-        /* Modal Popup for Adding Note / Folder */
-        .modal {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            width: 85%;
-            max-width: 320px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .modal-content h3 {
-            margin-bottom: 15px;
-            font-size: 18px;
-            color: #202124;
-        }
-
-        .modal-content input, .modal-content textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 14px;
-            outline: none;
-        }
-
-        .modal-content textarea {
-            resize: none;
-            height: 80px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .modal-buttons button {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .btn-cancel {
-            background-color: #f1f3f4;
-            color: #3c4043;
-        }
-
-        .btn-save {
-            background-color: #1a73e8;
-            color: white;
+        .fab:active {
+            transform: scale(0.9);
         }
 
         /* Bottom Navigation Bar */
         .bottom-nav {
-            height: 60px;
-            background-color: #ffffff;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
             position: absolute;
             bottom: 0;
             width: 100%;
+            height: 60px;
+            background-color: #fdfdfd;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
         }
 
         .nav-item {
@@ -304,55 +218,127 @@
             flex-direction: column;
             align-items: center;
             color: #5f6368;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
         }
 
         .nav-item.active {
-            color: #1a73e8;
+            color: #202124;
+            font-weight: 600;
         }
 
         .nav-item i {
             font-size: 18px;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
+        }
+
+        /* Modal for Adding New Note */
+        .modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 100;
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            width: 100%;
+            padding: 24px;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+
+        .modal-content h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #202124;
+        }
+
+        .modal-content input, .modal-content textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #dadce0;
+            border-radius: 12px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .modal-content textarea {
+            height: 100px;
+            resize: none;
+        }
+
+        .modal-btns {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .modal-btns button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-cancel {
+            background: #f1f3f4;
+            color: #3c4043;
+        }
+
+        .btn-save {
+            background: #fbbc05;
+            color: #fff;
         }
     </style>
 </head>
 <body>
 
-    <div class="phone-container">
+    <div class="app-container">
         <!-- Header -->
-        <div class="header">
-            <h1>THE DEEPAK NOTES</h1>
-            <div class="header-icons">
-                <!-- Naya Khali Folder Jodne ka Icon -->
-                <i class="fa-solid fa-folder-plus" id="openFolderModal" title="Add New Folder"></i>
-                <i class="fa-solid fa-gear" title="Settings"></i>
+        <div class="app-header">
+            <div class="header-top">
+                <div class="app-title">THE DEEPAK NOTES</div>
+                <div class="header-icons">
+                    <i class="fa-regular fa-folder"></i>
+                    <i class="fa-solid fa-gear"></i>
+                </div>
             </div>
-        </div>
 
-        <!-- Search Bar -->
-        <div class="search-container">
+            <!-- Search Bar -->
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search notes...">
+                <input type="text" id="searchInput" placeholder="Search notes">
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <div class="tab active" onclick="filterTab('All', this)">All</div>
+                <div class="tab" onclick="filterTab('Call notes', this)">Call notes</div>
+                <div class="tab" onclick="filterTab('Uncategorised', this)">Uncategorised</div>
             </div>
         </div>
 
-        <!-- Filter Tabs -->
-        <div class="tabs" id="tabsContainer">
-            <div class="tab active" data-category="All">All</div>
-            <div class="tab" data-category="Call notes">Call notes</div>
-            <div class="tab" data-category="Uncategorised">Uncategorised</div>
-        </div>
-
-        <!-- Notes Cards List -->
+        <!-- Notes List -->
         <div class="notes-list" id="notesList">
-            <!-- Dynamic notes will appear here -->
+            <!-- Dynamic notes will load here -->
         </div>
 
-        <!-- Floating Action Button (Add Note) -->
-        <div class="fab" id="openNoteModal">
+        <!-- Floating Add Button -->
+        <div class="fab" onclick="openModal()">
             <i class="fa-solid fa-plus"></i>
         </div>
 
@@ -363,165 +349,106 @@
                 <span>Notes</span>
             </div>
             <div class="nav-item">
-                <i class="fa-solid fa-square-check"></i>
+                <i class="fa-solid fa-list-check"></i>
                 <span>Tasks</span>
             </div>
         </div>
-    </div>
 
-    <!-- Note Add Modal -->
-    <div class="modal" id="noteModal">
-        <div class="modal-content">
-            <h3>Add New Note</h3>
-            <input type="text" id="noteTitleInput" placeholder="Note Title">
-            <textarea id="noteSnippetInput" placeholder="Write something..."></textarea>
-            <div class="modal-buttons">
-                <button class="btn-cancel" id="closeNoteModal">Cancel</button>
-                <button class="btn-save" id="saveNoteBtn">Save</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Folder Add Modal -->
-    <div class="modal" id="folderModal">
-        <div class="modal-content">
-            <h3>Add New Folder</h3>
-            <input type="text" id="folderNameInput" placeholder="Folder Name">
-            <div class="modal-buttons">
-                <button class="btn-cancel" id="closeFolderModal">Cancel</button>
-                <button class="btn-save" id="saveFolderBtn">Add</button>
+        <!-- Add Note Modal -->
+        <div class="modal" id="noteModal">
+            <div class="modal-content">
+                <h2>New Note</h2>
+                <input type="text" id="noteTitle" placeholder="Title (e.g., Pranshu 😍)">
+                <textarea id="noteDesc" placeholder="Write something..."></textarea>
+                <div class="modal-btns">
+                    <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button class="btn-save" onclick="saveNote()">Save</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Initial Sample Data
+        // Initial Sample Notes matching your phone app style
         let notes = [
-            { id: 1, title: "Pranshu 🥰🥰🥰", snippet: "Call notes discussion...", date: "Mon 10:57 PM", category: "Call notes" },
-            { id: 2, title: "ENGINEERING GRAPHICS - 1st SEM", snippet: "VERY MOST IMPORTANT QUESTIONS WITH...", date: "August 8", category: "Uncategorised" },
-            { id: 3, title: "Richa sukla mam", snippet: "303 (it Or electronics)", date: "August 3", category: "Uncategorised" }
+            { id: 1, title: 'Pranshu 😍🥰🥰', desc: 'Vdodndl Bldmdmr Bdod.', date: '10 August 10:57 PM', category: 'Call notes' },
+            { id: 2, title: 'ENGINEERING GRAPHICS - 1ST SEMEST...', desc: 'VERY MOST IMPORTANT QUESTIONS WITH...', date: 'August 8', category: 'Uncategorised' },
+            { id: 3, title: 'Richa sukla mam', desc: '303 (it Or electronics)', date: 'August 3', category: 'Uncategorised' },
+            { id: 4, title: 'https://deepak-bhai-shop-01.verce...', desc: '...app/', date: 'July 20', category: 'Uncategorised' }
         ];
 
-        const notesList = document.getElementById("notesList");
-        const searchInput = document.getElementById("searchInput");
-        
-        // Modals Elements
-        const noteModal = document.getElementById("noteModal");
-        const openNoteModal = document.getElementById("openNoteModal");
-        const closeNoteModal = document.getElementById("closeNoteModal");
-        const saveNoteBtn = document.getElementById("saveNoteBtn");
+        let currentCategory = 'All';
 
-        const folderModal = document.getElementById("folderModal");
-        const openFolderModal = document.getElementById("openFolderModal");
-        const closeFolderModalBtn = document.getElementById("closeFolderModal");
-        const saveFolderBtn = document.getElementById("saveFolderBtn");
+        function renderNotes(filter = '') {
+            const listEl = document.getElementById('notesList');
+            listEl.innerHTML = '';
 
-        const tabsContainer = document.getElementById("tabsContainer");
-
-        let currentCategory = "All";
-
-        // Render Notes Function
-        function renderNotes(filter = "", category = "All") {
-            notesList.innerHTML = "";
-            let filteredNotes = notes.filter(note => {
-                let matchesSearch = note.title.toLowerCase().includes(filter.toLowerCase()) || 
-                                    note.snippet.toLowerCase().includes(filter.toLowerCase());
-                let matchesCategory = category === "All" || note.category === category;
-                return matchesSearch && matchesCategory;
+            const filteredNotes = notes.filter(note => {
+                const matchesCategory = currentCategory === 'All' || note.category === currentCategory;
+                const matchesSearch = note.title.toLowerCase().includes(filter.toLowerCase()) || note.desc.toLowerCase().includes(filter.toLowerCase());
+                return matchesCategory && matchesSearch;
             });
 
-            if(filteredNotes.length === 0) {
-                notesList.innerHTML = `<p style="text-align:center; color:#80868b; margin-top:20px;">No notes found</p>`;
+            if (filteredNotes.length === 0) {
+                listEl.innerHTML = '<p style="text-align:center; color:#888; margin-top:40px;">No notes here yet</p>';
                 return;
             }
 
             filteredNotes.forEach(note => {
-                const card = document.createElement("div");
-                card.className = "note-card";
+                const card = document.createElement('div');
+                card.className = 'note-card';
                 card.innerHTML = `
-                    <div class="note-title">${note.title}</div>
-                    <div class="note-snippet">${note.snippet}</div>
-                    <div class="note-date">${note.date}</div>
-                    <i class="fa-solid fa-trash delete-btn" onclick="deleteNote(${note.id})"></i>
+                    <h3>${note.title}</h3>
+                    <p>${note.desc}</p>
+                    <div class="note-footer">${note.date}</div>
                 `;
-                notesList.appendChild(card);
+                listEl.appendChild(card);
             });
+        }
+
+        function filterTab(category, element) {
+            currentCategory = category;
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+            renderNotes(document.getElementById('searchInput').value);
         }
 
         // Search functionality
-        searchInput.addEventListener("input", (e) => {
-            renderNotes(e.target.value, currentCategory);
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            renderNotes(e.target.value);
         });
 
-        // Note Modal Controls
-        openNoteModal.addEventListener("click", () => { noteModal.style.display = "flex"; });
-        closeNoteModal.addEventListener("click", () => { noteModal.style.display = "none"; });
+        // Modal Controls
+        function openModal() {
+            document.getElementById('noteModal').classList.add('open');
+        }
 
-        // Save New Note
-        saveNoteBtn.addEventListener("click", () => {
-            const title = document.getElementById("noteTitleInput").value;
-            const snippet = document.getElementById("noteSnippetInput").value;
-            if(title.trim() === "") return alert("Please enter a title");
+        function closeModal() {
+            document.getElementById('noteModal').classList.remove('open');
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteDesc').value = '';
+        }
+
+        function saveNote() {
+            const title = document.getElementById('noteTitle').value;
+            const desc = document.getElementById('noteDesc').value;
+
+            if (!title && !desc) return;
 
             const newNote = {
                 id: Date.now(),
-                title: title,
-                snippet: snippet || "No additional text",
-                date: "Just now",
-                category: currentCategory === "All" ? "Uncategorised" : currentCategory
+                title: title || 'Untitled',
+                desc: desc,
+                date: 'Just now',
+                category: currentCategory === 'All' ? 'Uncategorised' : currentCategory
             };
 
             notes.unshift(newNote);
-            renderNotes("", currentCategory);
-            
-            document.getElementById("noteTitleInput").value = "";
-            document.getElementById("noteSnippetInput").value = "";
-            noteModal.style.display = "none";
-        });
-
-        // Delete Note
-        window.deleteNote = function(id) {
-            notes = notes.filter(n => n.id !== id);
-            renderNotes(searchInput.value, currentCategory);
+            renderNotes();
+            closeModal();
         }
 
-        // Folder Modal Controls
-        openFolderModal.addEventListener("click", () => { folderModal.style.display = "flex"; });
-        closeFolderModalBtn.addEventListener("click", () => { folderModal.style.display = "none"; });
-
-        // Save New Folder / Category Tab
-        saveFolderBtn.addEventListener("click", () => {
-            const folderName = document.getElementById("folderNameInput").value;
-            if(folderName.trim() === "") return alert("Please enter folder name");
-
-            // Add new tab dynamically
-            const newTab = document.createElement("div");
-            newTab.className = "tab";
-            newTab.setAttribute("data-category", folderName);
-            newTab.innerText = folderName;
-            newTab.addEventListener("click", () => {
-                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-                newTab.classList.add("active");
-                currentCategory = folderName;
-                renderNotes(searchInput.value, currentCategory);
-            });
-            tabsContainer.appendChild(newTab);
-
-            document.getElementById("folderNameInput").value = "";
-            folderModal.style.display = "none";
-        });
-
-        // Tab Switching logic for default tabs
-        document.querySelectorAll(".tab").forEach(tab => {
-            tab.addEventListener("click", (e) => {
-                document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-                e.target.classList.add("active");
-                currentCategory = e.target.getAttribute("data-category");
-                renderNotes(searchInput.value, currentCategory);
-            });
-        });
-
-        // Initial Load
+        // Initial render
         renderNotes();
     </script>
 </body>
