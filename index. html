@@ -3,125 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vats Notebook</title>
+    <title>VATS Notebook</title>
+    <!-- Google Fonts & FontAwesome for Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #f0f2f5;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* --- SPLASH SCREEN / LOGO ANIMATION --- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            color: #333;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
         }
-        .notebook-container {
-            width: 90%;
-            max-width: 700px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid #ddd;
+
+        .splash-logo {
+            font-size: 80px;
+            color: #fff;
+            margin-bottom: 20px;
+            animation: bounce 1.5s infinite alternate;
         }
-        .notebook-header {
-            background: #4a90e2;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
+
+        .splash-title {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 600;
             letter-spacing: 1px;
+            animation: fadeIn 1s ease-in-out;
         }
-        .notebook-body {
+
+        .spinner {
+            margin-top: 25px;
+            width: 45px;
+            height: 45px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- APP MAIN INTERFACE --- */
+        .app-container {
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            display: none; /* Splash hatne ke baad dikhega */
+            animation: fadeInApp 0.6s ease-in-out forwards;
         }
-        textarea {
-            width: 100%;
-            height: 350px;
-            padding: 15px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            resize: none;
-            line-height: 1.5;
-            outline: none;
-            background: #fffdf9;
-            background-image: linear-gradient(#eee 1px, transparent 1px);
-            background-size: 100% 24px;
+
+        @keyframes fadeInApp {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
-        textarea:focus {
-            border-color: #4a90e2;
-        }
-        .btn-container {
+
+        header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
         }
-        button {
-            background: #4a90e2;
+
+        header h1 {
+            font-size: 22px;
+            color: #4a3fef;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .note-input-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        .note-input-section input, 
+        .note-input-section textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .note-input-section input:focus, 
+        .note-input-section textarea:focus {
+            border-color: #667eea;
+        }
+
+        .note-input-section textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #357abd;
-        }
-        #status {
-            font-size: 14px;
-            color: #27ae60;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add:hover {
+            opacity: 0.9;
+        }
+
+        /* Notes Grid */
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .note-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 160px;
+            transition: transform 0.2s;
+        }
+
+        .note-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        }
+
+        .note-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #2d3748;
+            word-break: break-word;
+        }
+
+        .note-card p {
+            font-size: 13px;
+            color: #718096;
+            margin-bottom: 15px;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        .note-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #edf2f7;
+            padding-top: 10px;
+            font-size: 11px;
+            color: #a0aec0;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #e53e3e;
+            cursor: pointer;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .delete-btn:hover {
+            color: #c53030;
+        }
+
+        .no-notes {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #a0aec0;
+            padding: 40px;
+            font-size: 15px;
         }
     </style>
 </head>
 <body>
 
-    <div class="notebook-container">
-        <div class="notebook-header">
-            📖 Vats Notebook
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="splash-logo">
+            <i class="fa-solid fa-book-open"></i>
         </div>
-        <div class="notebook-body">
-            <textarea id="noteInput" placeholder="Yahan apne notes likhein... (Yeh automatic save ho jayenge)"></textarea>
-            <div class="btn-container">
-                <span id="status"></span>
-                <button onclick="saveNote()">Save Note</button>
-            </div>
+        <div class="splash-title">Vares Notebook</div>
+        <div class="spinner"></div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div class="app-container" id="app-container">
+        <header>
+            <h1><i class="fa-solid fa-book-bookmark"></i> Vares Notebook</h1>
+            <span id="note-count" style="font-size: 13px; color: #718096; font-weight: 500;">0 Notes</span>
+        </header>
+
+        <div class="note-input-section">
+            <input type="text" id="note-title" placeholder="Note Title...">
+            <textarea id="note-desc" placeholder="Write your thoughts here..."></textarea>
+            <button class="btn-add" onclick="addNote()"><i class="fa-solid fa-plus"></i> Add Note</button>
+        </div>
+
+        <div class="notes-grid" id="notes-grid">
+            <!-- Notes yahan dynamic inject hongi -->
         </div>
     </div>
 
     <script>
-        const noteInput = document.getElementById('noteInput');
-        const status = document.getElementById('status');
-
-        // Page khulte hi purana note load karna
-        window.onload = function() {
-            if(localStorage.getItem('vatsNotebookData')) {
-                noteInput.value = localStorage.getItem('vatsNotebookData');
-            }
-        };
-
-        // Note save karne ka function
-        function saveNote() {
-            localStorage.setItem('vatsNotebookData', noteInput.value);
-            status.innerText = "Note Saved Successfully! ✓";
+        // Splash Screen Handling (2 seconds baad hat jayega aur app dikhega)
+        window.addEventListener('load', () => {
             setTimeout(() => {
-                status.innerText = "";
-            }, 3000);
+                const splash = document.getElementById('splash-screen');
+                const app = document.getElementById('app-container');
+                
+                splash.style.opacity = '0';
+                splash.style.visibility = 'hidden';
+                
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    app.style.display = 'block';
+                    loadNotes();
+                }, 500);
+            }, 2000); // 2 seconds delay
+        });
+
+        // Notes Application Logic
+        function getNotes() {
+            let notes = localStorage.getItem('vares_notes');
+            return notes ? JSON.parse(notes) : [];
+        }
+
+        function saveNotesToStorage(notes) {
+            localStorage.setItem('vares_notes', JSON.stringify(notes));
+        }
+
+        function addNote() {
+            const titleInput = document.getElementById('note-title');
+            const descInput = document.getElementById('note-desc');
+
+            const title = titleInput.value.trim();
+            const desc = descInput.value.trim();
+
+            if (!title && !desc) {
+                alert('Please write something in title or description!');
+                return;
+            }
+
+            const newNote = {
+                id: Date.now(),
+                title: title || 'Untitled',
+                desc: desc || '',
+                date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+            };
+
+            let notes = getNotes();
+            notes.unshift(newNote); // Naya note sabse upar aayega
+            saveNotesToStorage(notes);
+
+            titleInput.value = '';
+            descInput.value = '';
+
+            loadNotes();
+        }
+
+        function deleteNote(id) {
+            let notes = getNotes();
+            notes = notes.filter(note => note.id !== id);
+            saveNotesToStorage(notes);
+            loadNotes();
+        }
+
+        function loadNotes() {
+            const notesGrid = document.getElementById('notes-grid');
+            const noteCount = document.getElementById('note-count');
+            let notes = getNotes();
+
+            noteCount.innerText = `${notes.length} Note${notes.length === 1 ? '' : 's'}`;
+
+            if (notes.length === 0) {
+                notesGrid.innerHTML = `<div class="no-notes"><i class="fa-regular fa-note-sticky" style="font-size: 30px; margin-bottom: 10px; display: block;"></i>No notes found. Create your first note above!</div>`;
+                return;
+            }
+
+            notesGrid.innerHTML = '';
+            notes.forEach(note => {
+                const card = document.createElement('div');
+                card.className = 'note-card';
+                card.innerHTML = `
+                    <div>
+                        <h3>${escapeHtml(note.title)}</h3>
+                        <p>${escapeHtml(note.desc)}</p>
+                    </div>
+                    <div class="note-footer">
+                        <span>${note.date}</span>
+                        <button class="delete-btn" onclick="deleteNote(${note.id})" title="Delete Note"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                `;
+                notesGrid.appendChild(card);
+            });
+        }
+
+        // Security helper for HTML escaping
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
     </script>
-
 </body>
 </html>
